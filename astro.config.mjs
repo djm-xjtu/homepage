@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, passthroughImageService } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
@@ -8,6 +8,9 @@ export default defineConfig({
   base: '/homepage',
   trailingSlash: 'always',
   integrations: [sitemap()],
+  // No server-side image processing, so we can skip the heavy `sharp` dependency
+  // entirely. Keeps CI installs small and fast.
+  image: { service: passthroughImageService() },
   markdown: {
     shikiConfig: {
       themes: { light: 'github-light', dark: 'github-dark' },
