@@ -1,0 +1,42 @@
+---
+import type { WorkItem } from '../data/site';
+
+interface Props {
+  items: WorkItem[];
+  detailed?: boolean;
+}
+
+const { items, detailed = false } = Astro.props;
+---
+
+<ul class="timeline">
+  {
+    items.map((item) => (
+      <li>
+        <div class="timeline__when">
+          {item.from} — {item.to}
+        </div>
+        <div class="timeline__company">
+          {item.href ? (
+            <a href={item.href} target="_blank" rel="noopener noreferrer">
+              {item.company}
+            </a>
+          ) : (
+            item.company
+          )}
+        </div>
+        <div class="timeline__role">
+          {item.role} · {item.location}
+        </div>
+        <p class="timeline__summary">{item.summary}</p>
+        {detailed && item.highlights && item.highlights.length > 0 && (
+          <ul class="timeline__highlights">
+            {item.highlights.map((h) => (
+              <li>{h}</li>
+            ))}
+          </ul>
+        )}
+      </li>
+    ))
+  }
+</ul>

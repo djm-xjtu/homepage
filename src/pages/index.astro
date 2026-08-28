@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PostList from '../components/PostList.astro';
+import Timeline from '../components/Timeline.astro';
+import { site, intro, funFacts, links, email, work } from '../data/site';
+
+const base = import.meta.env.BASE_URL;
+const url = (p: string) => `${base}/${p}`.replace(/\/+/g, '/');
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const recentWork = work.slice(0, 4);
+---
+
+<Base>
+  <h1>{site.heading}</h1>
+
+  {intro.map((p, i) => <p class={i === 0 ? 'lead' : undefined}>{p}</p>)}
+
+  {
+    funFacts.length > 0 && (
+      <>
+        <h2>Fun facts about me</h2>
+        <ul class="plain-list facts">
+          {funFacts.map((f) => (
+            <li>{f}</li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+
+  <h2>Let&rsquo;s connect</h2>
+  <ul class="plain-list connect">
+    {
+      links.map((l) => (
+        <li>
+          <a href={l.href} target="_blank" rel="noopener noreferrer me">
+            {l.label}
+          </a>
+        </li>
+      ))
+    }
+    <li class="muted">
+      <a href={email.href}>{email.display}</a>
+    </li>
+  </ul>
+
+  {
+    posts.length > 0 && (
+      <>
+        <div class="section-head">
+          <h2>Latest posts</h2>
+          <a href={url('blog/')}>See all posts →</a>
+        </div>
+        <PostList posts={posts} />
+      </>
+    )
+  }
+
+  <div class="section-head">
+    <h2>Work experience</h2>
+    <a href={url('work/')}>See all work →</a>
+  </div>
+  <Timeline items={recentWork} />
+</Base>

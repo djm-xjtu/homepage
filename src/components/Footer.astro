@@ -1,0 +1,18 @@
+---
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+const base = import.meta.env.BASE_URL;
+const rss = `${base}/rss.xml`.replace(/\/+/g, '/');
+---
+
+<footer class="site-footer">
+  <div class="shell site-footer__inner">
+    <span>&copy; {year} {site.name}</span>
+    <span>
+      <a href={rss}>RSS</a>
+      <span aria-hidden="true"> · </span>
+      <a href="https://github.com/djm-xjtu/homepage">Source</a>
+    </span>
+  </div>
+</footer>

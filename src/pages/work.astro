@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import Timeline from '../components/Timeline.astro';
+import { work, education, skills, site } from '../data/site';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Base title="Work" description="Work experience, education and technical skills of Jiaming Deng.">
+  <h1>Work</h1>
+  <p class="lead">
+    Software engineer working on large-scale storage systems and AI agents. A PDF version is
+    available on my <a href={`${base}/cv/`.replace(/\/+/g, '/')}>CV</a> page.
+  </p>
+
+  <h2>Experience</h2>
+  <Timeline items={work} detailed />
+
+  <h2>Education</h2>
+  <ul class="timeline">
+    {
+      education.map((e) => (
+        <li>
+          <div class="timeline__when">
+            {e.from} — {e.to}
+          </div>
+          <div class="timeline__company">{e.school}</div>
+          <div class="timeline__role">
+            {e.degree} · {e.location}
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>Technical skills</h2>
+  <ul class="skills">
+    {
+      skills.map((s) => (
+        <li>
+          <span class="skills__group">{s.group}</span>
+          <span>{s.items.join(' · ')}</span>
+        </li>
+      ))
+    }
+  </ul>
+</Base>
