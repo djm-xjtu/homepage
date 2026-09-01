@@ -9,7 +9,7 @@ export const site = {
   /** Used for <title> and SEO. */
   title: 'Jiaming Deng',
   description:
-    'Jiaming Deng — software engineer at TikTok in Dublin, working on video platform storage middleware and Oncall AI Agent services.',
+    'Jiaming Deng — software engineer at TikTok in Dublin, building distributed storage infrastructure for the video platform and the AI agents that keep it on its feet.',
   /** Big heading on the home page. */
   heading: "Hi, I'm Jiaming!",
   /** Absolute URL of the deployed site (also set in astro.config.mjs). */
@@ -20,17 +20,18 @@ export const site = {
 
 /** Intro paragraphs on the home page. Plain strings, one per paragraph. */
 export const intro: string[] = [
-  "I'm a software engineer at TikTok in Dublin, working on the video platform. My day job sits at two ends of the stack: the storage middleware that moves video bytes around, and the Oncall AI Agent services that keep all of it running.",
-  "Before TikTok I was a research assistant at Trinity College Dublin, where I also did my MSc in Computer Science. Before that I studied Computer Science at Xi'an Jiaotong University.",
-  "I like problems where correctness, latency and scale all pull in different directions — caches, addressing, replication — and lately I've been spending a lot of time teaching agents to debug the systems I used to page myself for.",
+  "I'm a software engineer at TikTok in Dublin, building distributed storage infrastructure for the video platform. Most of what I do falls into three buckets: object caching, edge storage, and cache addressing — figuring out where a video byte lives and how to hand it back quickly without asking anyone for permission.",
+  "More recently I've been building the on-call side of that too: a supervisor-based multi-agent system that does root cause analysis and self-recovery for five products on the platform, plus a pile of MCP tools it uses to do the job.",
+  "Before TikTok I was a research assistant at the Gillan Lab in Trinity College Dublin, where I also did my MSc in Computer Science. Before that I studied Computer Science at Xi'an Jiaotong University.",
+  "I like problems where correctness, latency and scale all pull in different directions. Caches are a good example: every performance win is also a new way to serve the wrong bytes.",
 ];
 
 /** Short, human bullet points. Delete the section by emptying this array. */
 export const funFacts: string[] = [
   'I work on caches that serve 10M+ QPS of video frame downloads, which means a bad day is measurable in percent.',
+  'I built a centralised cache addressing service, ran it for a year, then designed the decentralised architecture that replaced it. Both were the right call at the time.',
   'I moved from Xi\u2019an to Dublin for grad school in 2022 and never left.',
   'Go is my daily driver; I also write Python, Java, JavaScript and C++ depending on who is asking.',
-  'I built an Oncall AI Agent from scratch — a supervisor that routes to specialised sub-agents, each with its own MCP tools and prompts.',
   'My Grafana MCP tools shipped to TikTok\u2019s internal MCP marketplace and are now used well beyond my own team.',
 ];
 
@@ -64,33 +65,46 @@ export type WorkItem = {
 /** Newest first. The home page shows the first four. */
 export const work: WorkItem[] = [
   {
-    from: 'Nov 2023',
+    from: 'Mar 2025',
     to: 'Present',
     company: 'TikTok',
-    role: 'Software Engineer',
+    role: 'Software Engineer II',
     location: 'Dublin, Ireland',
     summary:
-      'Video platform — storage middleware and Oncall AI Agent services. Go, Python, MySQL, MongoDB, Redis, object storage, RocketMQ, Eino, LangGraph.',
+      'Distributed storage infrastructure for the video platform: object caching, edge storage and cache addressing, in Go, Python and Redis.',
     highlights: [
-      'Built and ran a small-object cache storage service serving 10M+ QPS of video frame downloads at an 82%+ hit rate.',
-      'Built and ran an edge redundancy storage service handling 12k+ QPS of video uploads across edge clusters.',
-      'Designed a decentralised cache addressing architecture — consistent hashing with virtual nodes plus Gossip-based topology discovery — replacing a central lookup service so clients route straight to the target node, cutting metadata lookup latency and lifting read/write throughput.',
-      'Built an Oncall AI Agent from scratch: a multi-agent architecture where a supervisor selects specialised sub-agents, each with their own MCP tools and prompts, which improves accuracy and stops tool misuse. Now doing automated RCA and self-recovery for five products on the video platform.',
-      'Developed a broad set of MCPs and Skills over TikTok private cloud and internal systems — Kubernetes, configuration centre, metrics, Grafana, object storage, Redis — plus video-platform-specific tooling. The Grafana MCP tools were published to the internal MCP marketplace and picked up widely.',
+      'Distributed object cache optimisation — improved large-scale video frame delivery with multi-level cache routing across local cache, remote peer cache, RDMA cache and origin fallback, plus asynchronous write-back, capacity-aware eviction and runtime feature gates to cut origin load and raise cache availability.',
+      'Edge storage service — built a large-scale edge redundancy system for 12k+ QPS of edge video uploads, using local object writes, dual-replica async replication, automatic peer discovery, WAL-based retry and disk-health governance across multi-PiB edge infrastructure.',
+      'Decentralised cache addressing — designed and implemented a consistent-hashing addressing architecture with virtual nodes and Gossip-based topology discovery, replacing centralised metadata lookup with direct client-to-node routing to reduce lookup latency and improve read/write throughput.',
+      'On-call AI Agent — built a supervisor-based multi-agent system with specialised MCP tools for automated root cause analysis and self-recovery across five video platform products, and published reusable Grafana MCP tools to TikTok\u2019s internal marketplace.',
+    ],
+  },
+  {
+    from: 'Nov 2023',
+    to: 'Mar 2025',
+    company: 'TikTok',
+    role: 'Software Engineer I',
+    location: 'Dublin, Ireland',
+    summary:
+      'Built and ran the object cache and cache addressing services behind video frame delivery.',
+    highlights: [
+      'Object cache service — developed and maintained a high-throughput object cache for video frame downloads with local cache reads, origin fallback, asynchronous write-back and cache prewarming, serving 10M+ QPS at an 82%+ hit rate across the video platform.',
+      'Centralised cache addressing service — developed and maintained a high-throughput addressing service backed by in-memory indexing and Redis, giving reliable object-to-cache-node lookup for small-object video caching at scale.',
     ],
   },
   {
     from: 'Jun 2023',
     to: 'Oct 2023',
-    company: 'Trinity College Dublin',
+    company: 'Trinity College Dublin — Gillan Lab',
     role: 'Software Engineer, Research Assistant',
     location: 'Dublin, Ireland',
     summary:
-      'Microservices and fast-moving, research-facing requirements. JavaScript, React, MongoDB.',
+      'Web applications and services for neuroscience research staff, against fast-moving research requirements. JavaScript, React, MongoDB.',
     highlights: [
-      'Optimised the data-fetching algorithm for researchers by removing redundant data and introducing multiple stream pipelines plus Gzip, a 30% improvement in retrieval.',
-      'Built a well-tested web application for researchers to view, analyse and export neuroscientific data, with documented webserver endpoints for developers.',
-      "Built a permission-management server and UI so researchers could control access to citizens' experimental data.",
+      'Research web applications — developed and tested React/JavaScript applications and MongoDB-backed services for lab staff to view, analyse and export neuroscience research data.',
+      'Data retrieval optimisation — improved retrieval performance by 30% by removing redundant data processing and tuning streaming pipelines and Gzip compression.',
+      "Participant data access control — built a permission-management application and backend services so researchers could manage and enforce access to participants' experimental data.",
+      'Developer tooling and documentation — documented the web server API endpoints and exposed them through a web interface so developers could inspect the services behind the lab\u2019s applications.',
     ],
   },
   {
@@ -137,7 +151,13 @@ export const education: EducationItem[] = [
 /** Grouped technical skills, rendered on /work/. */
 export const skills: { group: string; items: string[] }[] = [
   { group: 'Languages', items: ['Go', 'Java', 'Python', 'JavaScript', 'C++'] },
-  { group: 'LLM services & tools', items: ['Eino', 'LangChain', 'LangGraph', 'Codex', 'Claude Code'] },
+  {
+    group: 'AI & agent tools',
+    items: ['Eino', 'LangGraph', 'LangChain', 'MCP', 'Codex', 'Claude Code'],
+  },
   { group: 'Backend frameworks', items: ['Gin', 'Spring Boot', 'Express', 'Kitex', 'Hertz'] },
-  { group: 'Data & storage', items: ['Redis', 'MySQL', 'MongoDB', 'RocketMQ', 'Object Storage'] },
+  {
+    group: 'Data & infrastructure',
+    items: ['Redis', 'MySQL', 'MongoDB', 'RocketMQ', 'Object Storage', 'Kubernetes'],
+  },
 ];
